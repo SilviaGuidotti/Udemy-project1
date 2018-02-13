@@ -1,0 +1,92 @@
+.story{
+    width: 75%;
+    margin: 0 auto;
+    box-shadow: 0 3rem 6rem rgba($color-black, .1);
+    background-color: rgba($color-white, .5);
+    border-radius: 3px;
+    padding: 6rem;
+    padding-left: 9rem;
+    font-size: $default-font-size;
+    transform: skewX(-12deg);
+
+    /*& > *{
+        transform: skewX(12deg); for removing skewing to circle and content. BUT it's not going to work in this case because you can't have two transform properties at the same time (translateX(-3rem) and skewX(12deg)). it will transform the story__text but not the story__shape. we can just add the transform property:skewX directly to them. 
+    }*/
+
+    @include respond(tab-port){
+        width:100%;
+        padding: 4rem;
+        padding-left: 7rem;
+    }
+
+    @include respond (phone){
+        transform: skewX(0);
+        
+    }
+
+    &__shape{
+        width: 15rem;
+        height: 15rem;
+        float: left; //to make the rest of the content float round it
+        transform: translateX(-3rem) skewX(12deg); //it's better not to use margin or padding to give some space between circle and content.
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+
+        @supports (clip-path: circle(50% at 50% 50%)) or (-webkit-clip-path: circle(50% at 50% 50%)){
+            -webkit-clip-path: circle(50% at 50% 50%);
+            clip-path: circle(50% at 50% 50%); //to give the shape. no for content 
+            -webkit-shape-outside: circle(50% at 50% 50%);
+            shape-outside: circle(50% at 50% 50%); //give the shape of the box. it has to have width and height. just for content outside.
+            border-radius: none;
+        }
+
+        @include respond (phone){
+            transform: translateX(-3rem) skewX(0);
+            
+        }
+    }
+
+    &__img{
+        height: 100%; //100% of its parent element, which is 15rem (&__shape). Img will fit inside the cirle now. 
+        transform: translateX(-4rem) scale(1.4); //translateX moves the image with the lady in the center. scale is for zoom in effect
+        -webkit-transition: all .5s;
+        transition: all .5s;
+        backface-visibility: hidden;
+    }
+
+
+    &__text{
+        transform: skewX(12deg);
+
+        @include respond (phone){
+            transform: skewX(0);
+            
+        }
+    }
+
+    &__caption{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, 20%);
+        color: $color-white;
+        text-transform: uppercase;
+        font-size: 1.7rem;
+        text-align: center;
+        opacity: 0;
+        -webkit-transition: all .5s;
+        transition: all .5s;
+        backface-visibility: hidden;
+    }
+
+    &:hover &__caption{
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+
+    &:hover &__img{
+        transform: translateX(-4rem) scale(1); //zoom out img when hovered it
+        filter: blur(3px) brightness(80%); //values under 100% makes it darker and vice versa
+    }
+}

@@ -1,0 +1,101 @@
+/*spudo classes to style element under special condition*/
+.btn{
+    &,
+    &:link,
+    &:visited {
+        text-transform: uppercase;
+        text-decoration: none;
+        padding: 1.5rem 4rem;
+        display: inline-block;
+        border-radius: 10rem;
+        transition: all .2s; /*transition property shorthand. transition has to be in the initial statment in order to access to the animation of hover and activate*/
+        position: relative; /*after-button should be hidden behind the .btn button, set the position to relative as reference for the after-button*/
+        font-size: $default-font-size;
+
+        //change for <button> element
+        border: none;
+        cursor: pointer;
+    }
+    
+    &:hover {
+        transform: translateY(-3px); /*negative value to go up*/
+        box-shadow: 0 1rem 2rem rgba($color-black, .2); /*offset in the x direction, offset down y direction, blur shadow, color and opacity a*/
+
+        &::after{ /*make the after-button visible after we hover the .btn button*/
+            transform: scaleX(1.4) scaleY(1.6); /*to make it visible we have to increase the size of the button behind the original*/
+            opacity: 0; /*fading it out*/
+        }
+    }
+    
+    &:active,
+    &:focus{
+        outline: none;
+        transform: translateY(-1px);
+        box-shadow: 0 .5rem 1rem rgba($color-black, .2); /*impression shadow gets smaller - like pushing a real button*/
+    }
+    
+    &--white{
+        background-color: $color-white;
+        color: $color-grey-dark;
+
+        &::after{ /*give the color like the parent element .btn-white button*/
+            background-color: $color-white;
+        }
+    }
+
+    &--green{
+        background-color: $color-primary;
+        color: $color-white;
+
+        &::after{ /*give the color like the parent element .btn-green button*/
+            background-color: $color-primary;
+        }
+    }
+    
+    &::after { /*after psudo element is treated as a child of the .btn button*/
+        content: ""; /*always necessery, can be empty but has to be specified*/
+        display: inline-block; /*like the other button*/
+        height: 100%; /*100% of the width/height of the parent button*/
+        width: 100%;
+        border-radius: 10rem;
+        position: absolute; /*put it behind the actual/parent .btn button*/
+        top: 0;
+        left: 0;
+        z-index: -1; /*defines the position of the elements if they are one on top of the other one. in this case the .btn(top) and ::after buttons(behind)*/
+        transition: all .4s; /*to animate the button .btn:hover::after, set transition here which is the initial state*/
+    }
+    
+    &--animated{
+        animation: moveInBottom .5s ease-out;
+        animation-delay: .75s;
+        animation-fill-mode: backwards; /*in order to make the button appear. it will automatically apply the style up to 0% before the animation starts (@keyframes moveInBottom { 0%{ }}*/
+    }
+}
+
+
+//green button learn more
+.btn-text{
+    &:link,
+    &:visited{
+        font-size: $default-font-size;
+        color: $color-primary;
+        text-decoration: none;
+        display: inline-block;
+        border-bottom: 1px solid $color-primary;
+        padding: 3px;
+        transition: all .2s;    
+    }
+
+    &:hover{
+        background-color: $color-primary;
+        color: $color-white;
+        box-shadow: 0 1rem 2rem rgba($color-black, .15);
+        transform: translateY(-2px);
+
+    }
+
+    &:active{
+        box-shadow: 0 .5rem 1rem rgba($color-black, .15);
+        transform: translateY(0);
+    }
+}
